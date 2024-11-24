@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jQuery Assignment</title>
+  <style>
+    .error { /* error class */
+      border: 2px solid red; /* red border */
+      background-color: yellow; /* yellow background */
+    }
+  </style>
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+  <h1>jQuery Assignment</h1>
+  
+  <div>
+    <label for="textbox1">Textbox 1:</label> <!--textbox 1 label-->
+    <input type="text" id="textbox1"> <!--Input type text and id textbox2-->
+  </div>
+  
+  <div>
+    <label for="textbox2">Textbox 2:</label> <!--textbox 2 label-->
+    <input type="text" id="textbox2"> <!--Input type text and id textbox2-->
+  </div>
+  
+  <div> <!--operation buttons-->
+    <button id="add">+</button>
+    <button id="subtract">-</button>
+    <button id="multiply">×</button>
+    <button id="divide">÷</button>
+  </div>
+  
+  <p>Result: <span id="result">0</span></p> <!--result-->
+  
+  <script>
+    $(document).ready(function () {
+      // Add or remove the error class based on input length
+      $('#textbox1, #textbox2').on('blur', function () { // Only add the error when out of focus
+        const value = $(this).val(); // Get the input value
+        if (value.length > 10 || isNaN(value)) { // Add error class if the value length is more than 10 or not a number 
+          $(this).addClass('error');
+        } else { // Otherwise, remove the error class
+          $(this).removeClass('error');
+        }
+      });
+
+      // Perform the operations
+      const calculate = (operation) => {
+        const value1 = $('#textbox1').val(); // Value from textbox1
+        const value2 = $('#textbox2').val(); // Value from textbox2
+
+        // Check if textbox1 or 2 has the 'error' class or is not a number
+        if ($('#textbox1').hasClass('error') || $('#textbox2').hasClass('error') || isNaN(value1) || isNaN(value2)) {
+          $('#result').text('Error: Invalid input.');
+          return;
+        }
+
+        // Convert inputs from the textbox to numbers
+        const num1 = parseFloat(value1) || 0;
+        const num2 = parseFloat(value2) || 0;
+        let result;
+
+        // Calculate the result based on the case
+        switch (operation) {
+          case 'add':
+            result = num1 + num2;
+            break;
+          case 'subtract':
+            result = num1 - num2;
+            break;
+          case 'multiply':
+            result = num1 * num2;
+            break;
+          case 'divide':
+            result = num2 !== 0 ? num1 / num2 : 'Error: Division by zero';
+            break;
+        }
+
+        $('#result').text(result);
+      };
+      
+      // Button click event handlers
+      $('#add').on('click', function () {
+        calculate('add');
+      });
+
+      $('#subtract').on('click', function () {
+        calculate('subtract');
+      });
+
+      $('#multiply').on('click', function () {
+        calculate('multiply');
+      });
+
+      $('#divide').on('click', function () {
+        calculate('divide');
+      });
+    });
+  </script>
+</body>
+</html>
